@@ -9,14 +9,15 @@ This is a simple RESTful API for managing tasks. It allows users to create, read
 -  Update task details
 -  Delete tasks
 -  MongoDB for database
+-  Swagger UI for documentation
 
 ### Installation Guide
 * Clone this repository [here](https://github.com/soworona/task-management-api.git).
-* Run npm install to install all dependencies
+* Run **npm install** to install all dependencies
 * Create an .env file in your project root folder and add your variables. See .env.sample for assistance.
 
 ### Usage
-* Run npm run dev to start the application.
+* Run **npm run dev** to start the application.
 
 ### API Endpoints
 | HTTP Verbs | Endpoints | Action |
@@ -28,8 +29,11 @@ This is a simple RESTful API for managing tasks. It allows users to create, read
 | DELETE | /api/tasks/{id} | To delete a task |
 | PATCH | /api/tasks/{id}/status | To change the status of a existing task |
 
-Technologies Used
+### Technologies Used
 * [NodeJS](https://nodejs.org/) This is a cross-platform runtime environment built on Chrome's V8 JavaScript engine used in running JavaScript codes on the server. It allows for installation and managing of dependencies and communication with databases.
 * [ExpressJS](https://www.expresjs.org/) This is a NodeJS web application framework.
 * [MongoDB](https://www.mongodb.com/) This is a free open source NOSQL document database with scalability and flexibility. Data are stored in flexible JSON-like documents.
 
+#### Authors
+* Sworna Pun <br>
+  imsworna@gmail.com
