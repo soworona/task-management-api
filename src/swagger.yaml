@@ -1,0 +1,335 @@
+openapi: 3.0.4
+info:
+  title: Task Management API
+  version: 1.0.0
+  description: This API helps you manage your tasks, including creation, retrieval, updating, and deletion
+
+servers:
+  - url: http://localhost:3000
+
+tags:
+  - name: tasks
+    description: Task management endpoints
+paths:
+  /api/tasks:
+    get:
+      tags:
+        - tasks
+      summary: Get all tasks
+      description: Returns all tasks. Supports pagination, filtering by status and sorting.
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Page number for pagination (default is 1)
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          description: Number of tasks per page (default is 5)
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [pending, in-progress, completed]
+          description: Filter tasks by status
+        - in: query
+          name: createdAt
+          schema:
+            type: string
+            format: date
+          description: Filter tasks by date (yyyy-mm-dd)
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: Got all tasks successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - tasks
+      summary: Create new task
+      description: Creates a new task.
+      requestBody:
+        description: Create a new task.
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBody'
+        required: true
+      responses: 
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: New task created successfully.
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/tasks/{id}:
+    get:
+      tags:
+        - tasks
+      summary: Get task by id
+      description: Returns a single task.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the task
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: Got task by id successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - tasks
+      summary: Update existing task
+      description: Updates existing task by id.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the task
+      requestBody:
+        description: Create a new task.
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestBody'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: Task updated successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete: 
+      tags:
+        - tasks
+      summary: Delete task by id
+      description: Deletes existing task by id.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the task
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: Task deleted successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/tasks/{id}/status:
+    patch: 
+      tags:
+        - tasks
+      summary: Update task status
+      description: Updates only the status of the task 
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+          description: ID of the task
+      requestBody:
+        description: Update task status
+        content: 
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: pending
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: OK
+                  message:
+                    type: string
+                    example: Task status updated successfully
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+        '400':
+          description: Bad request
+        '500':
+          description: Server error
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+ 
+components:
+  schemas:
+    RequestBody:
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Task name"
+        description:
+          type: string
+          example: "Short description of the task"
+        status:
+          type: string
+          enum: [pending, in-progress, completed]
+          example: "pending"
+
+    Task:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "67f9fcf07887f92c51303ab7"
+        title:
+          type: string
+          example: "Task name"
+        description:
+          type: string
+          example: "Short description of the task"
+        status:
+          type: string
+          enum: [pending, in-progress, completed]
+          example: "pending"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2025-04-12T09:38:32.790Z"
+        __v:
+          type: integer
+          example: 0 
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+          
